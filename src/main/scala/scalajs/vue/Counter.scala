@@ -12,16 +12,28 @@ import scalajs.vuejs.Vue
 import scalajs.vuejs.Vue
 
 object Counter extends JSApp {
+
+  type VueMethod=js.ThisFunction0[Data,Unit]
+
   override def main(): Unit = {
 
     val app = new Vue(
       literal(
         el = "#main",
         data = literal(
-          message = "Hello Scala.js"
+          count = 0
+        ),
+        methods = literal(
+          increment = ((data: Data) =>
+            data.count += 1 //++ won't work
+            ):VueMethod
         )
       )
     )
+
   }
 }
 
+trait Data extends Vue {
+  var count: Int = js.native
+}
